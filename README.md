@@ -33,3 +33,8 @@ package.json
 tsconfig.json
 .gitignore
 README.md
+
+MongoDB:
+ProjectPlannerDev
+jnXpBUbGkEZW0Me3
+mongodb+srv://ProjectPlannerDev:jnXpBUbGkEZW0Me3@projectplanner.zuqhq.mongodb.net/
