@@ -1,9 +1,17 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import { Header } from "../components/Header/Header";
+import { Locale } from "../i18n/locales";
 
-const Layout: React.FC = () => {
+type LayoutProps = {
+  currentLocale: Locale;
+  handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+};
+
+const Layout: React.FC<LayoutProps> = ({ currentLocale, handleChange }) => {
   return (
     <div>
+      <Header currentLocale={currentLocale} handleChange={handleChange} />
       <header>
         <nav>
           <ul>

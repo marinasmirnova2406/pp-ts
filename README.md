@@ -12,29 +12,32 @@ client
 │   ├── components
 │   ├── pages
 │   ├── services
+│   ├── store
+│   │   └── slices
+│   ├── styles
 │   ├── App.tsx
 │   └── index.tsx
-└── package.json
+├── craco.config.js
+├── package-lock.json
+├── package.json
+└── tsconfig.json
 
 server
 ├── dist
 ├── node_modules
 ├── src
 │   ├── config
+│   │   └── db.ts
 │   ├── controllers
 │   ├── models
 │   ├── routes
 │   └── index.ts
-└── package.json
+├── .env
+├── package-lock.json
+├── package.json
+└── tsconfig.json
 
-.env
+.gitignore
 package-lock.json
 package.json
-tsconfig.json
-.gitignore
 README.md
-
-MongoDB:
-ProjectPlannerDev
-jnXpBUbGkEZW0Me3
-mongodb+srv://ProjectPlannerDev:jnXpBUbGkEZW0Me3@projectplanner.zuqhq.mongodb.net/
