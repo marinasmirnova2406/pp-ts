@@ -1,4 +1,6 @@
 import React from 'react';
+import { RootState } from "../store";
+import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Link } from 'react-router-dom';
 import { Header } from "../components/Header/Header";
 import { Locale } from "../i18n/locales";
@@ -8,7 +10,14 @@ type LayoutProps = {
   handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-const Layout: React.FC<LayoutProps> = ({ currentLocale, handleChange }) => {
+const Layout: React.FC<LayoutProps> = ({ handleChange }) => {
+
+  const currentLocale = useSelector((state: RootState) => state.locales.locale);
+
+
+
+
+
   return (
     <div>
       <Header currentLocale={currentLocale} handleChange={handleChange} />

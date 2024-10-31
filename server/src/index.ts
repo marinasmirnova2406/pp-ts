@@ -5,7 +5,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 import { connectDB } from "./config/db";
 
+// Routes
 import testRoutes from './routes/TestRoutes';
+import translationRoutes from "./routes/translationRoutes";
 
 const PORT = process.env.REACT_APP_PORT || 5000;
 const app = express();
@@ -19,6 +21,7 @@ app.use(bodyParser.json());
 
 
 app.use('/api/test', testRoutes);
+app.use("/api/translations", translationRoutes);
 
 
 

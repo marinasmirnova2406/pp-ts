@@ -31,6 +31,9 @@ server
 │   ├── controllers
 │   ├── models
 │   ├── routes
+│   ├── i18n
+│   │   ├── locates.ts
+│   │   └── massages.ts
 │   └── index.ts
 ├── .env
 ├── package-lock.json

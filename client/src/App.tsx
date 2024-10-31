@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
+import { RootState } from "./store/index"
 //Pages
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home/Home";
@@ -9,17 +11,22 @@ import { TestPage } from "./pages/TestPage/TestPage";
 import { IntlProvider } from 'react-intl';
 import { LOCALES, Locale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
-import getLocaleFromIP from "./utils/getLocale";
+// Another
+import { onAppStartActions } from "./services/appStartService"
 
 const App: React.FC = () => {
-  const [currentLocale, setCurrentLocale] = useState<Locale>(getInitialLocale());
+
 
 
   useEffect(() => {
-    if (!localStorage.getItem("locale")) {
-      getLocaleFromIP().then((locale) => setCurrentLocale(locale as Locale));
-    }
+    onAppStartActions();
   }, []);
+
+
+
+
+  const [currentLocale, setCurrentLocale] = useState<Locale>(getInitialLocale());
+
 
   function getInitialLocale(): Locale {
     const savedLocale = localStorage.getItem("locale") as Locale;
@@ -27,9 +34,9 @@ const App: React.FC = () => {
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const locale = event.target.value as Locale;
-    setCurrentLocale(locale);
-    localStorage.setItem("locale", locale);
+    // const locale = event.target.value as Locale;
+    // setCurrentLocale(locale);
+    // localStorage.setItem("locale", locale);
   };
 
   return (
@@ -40,6 +47,7 @@ const App: React.FC = () => {
       defaultLocale={LOCALES.ENGLISH}
     >
       <Routes>
+        {/* <Route path="/" element={<Layout currentLocale={currentLocale} handleChange={handleChange} />}> */}
         <Route path="/" element={<Layout currentLocale={currentLocale} handleChange={handleChange} />}>
           <Route index element={<Home />} />
           <Route path="*" element={<Notfound />} />
