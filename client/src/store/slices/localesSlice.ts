@@ -4,31 +4,39 @@ import { checkLocalesDataInLocalStorage } from "../../utils/helpersToStorage";
 import { mapCountryCodeToLocale } from "../../utils/getLocaleAndLocalizationFromIP";
 
 interface LocatesState {
-    localization: string;
-    locale: Locale;
-    currency: string;
+  localization: string;
+  locale: Locale;
+  currency: string;
 }
 
-const { localStorageLocale, localStorageLocalization, localStorageCurrency } = checkLocalesDataInLocalStorage();
-const initialState: LocatesState = {
+const getInitialLocatesState = (): LocatesState => {
+  const { localStorageLocale, localStorageLocalization, localStorageCurrency } =
+    checkLocalesDataInLocalStorage();
+
+  return {
     localization: localStorageLocalization || "en",
-    locale: localStorageLocale ? mapCountryCodeToLocale(localStorageLocale.substring(0, 2).toUpperCase()) : LOCALES.ENGLISH,
-    currency: localStorageCurrency || "USD"
+    locale: localStorageLocale
+      ? mapCountryCodeToLocale(localStorageLocale.substring(0, 2).toUpperCase())
+      : LOCALES.ENGLISH,
+    currency: localStorageCurrency || "USD",
+  };
 };
+
+const initialState: LocatesState = getInitialLocatesState();
 
 const locatesSlice = createSlice({
   name: "locates",
   initialState,
   reducers: {
     setLocale(state, action) {
-        state.locale = action.payload;
-      },
+      state.locale = action.payload;
+    },
     setLocalization(state, action) {
-        state.localization = action.payload;
+      state.localization = action.payload;
     },
     setCurrency(state, action) {
       state.currency = action.payload;
-  },
+    },
   },
 });
 
