@@ -16,11 +16,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm start --prefix client\""
+    "client": "npm start --prefix client",
+    "server": "npm run dev --prefix server",
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "build": "npm run build --prefix client",
+    "test": "npm test --prefix client"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +41,10 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^9.0.1"
+    "concurrently": "^9.0.1",
+    "css-loader": "^7.1.2",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.80.6",
+    "sass-loader": "^16.0.3"
   }
 }
