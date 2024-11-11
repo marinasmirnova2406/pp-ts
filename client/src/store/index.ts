@@ -1,11 +1,9 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import exampleReducer from "./slices/testSlice";
 import localesReducer from "./slices/localesSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
-  example: exampleReducer,
   locales: localesReducer,
 });
 

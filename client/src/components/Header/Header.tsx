@@ -7,7 +7,7 @@ import { setLocale } from "../../store/slices/localesSlice";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
-  const currentLocale1 = useSelector(
+  const currentLocale = useSelector(
     (state: RootState) => state.locales.locale
   );
 
@@ -28,7 +28,7 @@ export const Header: React.FC = () => {
     <header>
       <div className="switcher">
         Languages{" "}
-        <select onChange={handleChange1} value={currentLocale1}>
+        <select onChange={handleChange1} value={currentLocale}>
           {languages.map(({ name, code }) => (
             <option key={code} value={code}>
               {name}

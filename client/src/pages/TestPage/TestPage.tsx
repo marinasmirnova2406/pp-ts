@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Counter from '../../components/Counter';
-import { fetchTranslations } from '../../services/translationService';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/index";
+import { doTranslations } from '../../services/translationService';
 
 const TestPage: React.FC = () => {
 
   const [translations, setTranslations] = useState<Record<string, string>>({});
 
+  const currentLocale = useSelector(
+    (state: RootState) => state.locales.locale
+  );
+
 
   useEffect(() => {
     const loadTranslations = async () => {
       try {
-        const keys = ['welcome_message', 'good_message'];
-        const lang = 'pl';
-        const data = await fetchTranslations(lang, keys);
+        const data = await doTranslations(['welcome_message', 'good_message', 'test.msg'], false);
         setTranslations(data);
       } catch (err) {
         console.log('Error fetching translations');
@@ -20,14 +23,16 @@ const TestPage: React.FC = () => {
     };
 
     loadTranslations();
-  }, []);
+
+    
+
+  }, [currentLocale]);
 
 
   return (
     <div className="basic-page">
-      <Counter />
       Test Page
-      <h1 style={{ fontSize: "20px" }}>Hello!</h1>
+      <h1 style={{ fontSize: "20px" }}>{translations['test.msg']}</h1>
       <h1>{translations['welcome_message']}</h1>
       <p>{translations['good_message']}</p>
     </div>
