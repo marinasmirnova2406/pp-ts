@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import localesReducer from "./slices/localesSlice";
+import modalReducer from "./slices/modalSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
   locales: localesReducer,
+  modal: modalReducer,
 });
 
 const persistConfig = {
