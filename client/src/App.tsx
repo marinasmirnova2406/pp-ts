@@ -5,9 +5,12 @@ import { RootState } from "./store/index";
 //Pages
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home/Home";
+import { MyTrips } from "./pages/MyTrips/MyTrips";
+import { TravelInspirations } from "./pages/TravelInspirations/TravelInspirations";
+import { TravelGuide } from "./pages/TravelGuide/TravelGuide";
 import { Notfound } from "./pages/Notfound/Notfound";
 import { TestPage } from "./pages/TestPage/TestPage";
-// Locates
+// Locatess
 import { IntlProvider } from "react-intl";
 import { LOCALES, Locale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
@@ -38,6 +41,9 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/my-trips" element={<MyTrips />} />
+          <Route path="/travel-inspirations" element={<TravelInspirations />} />
+          <Route path="/travel-guide" element={<TravelGuide />} />
           <Route path="*" element={<Notfound />} />
           <Route path="/test-page" element={<TestPage />} />
         </Route>

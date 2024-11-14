@@ -1,7 +1,7 @@
 import axios from "axios";
 import store, { RootState } from "../store/index";
-import { LOCALES } from '../i18n/locales';
-import { messages } from '../i18n/messages'
+import { LOCALES } from "../i18n/locales";
+import { messages } from "../i18n/messages";
 
 const API_URL = "http://localhost:5000/api";
 
@@ -18,42 +18,43 @@ export const fetchTranslations = async (lang: string, keys: string[]) => {
 
 // isAuto - в будущем при true - при отсутствии готового первода делать его автоматически через сторонние сервисі
 export const doTranslations = async (keys: string[], isAuto: boolean) => {
-
   const currentLocale = (store.getState() as RootState).locales.locale;
 
   const keysCopy = JSON.parse(JSON.stringify(keys));
+
   const result: Record<string, string> = {};
 
-    keysCopy.forEach((key: string)  => {
-      const translation = messages[currentLocale]?.[key];
-  
-      if (translation) {
-        result[key] = translation;
-        const index = keysCopy.indexOf(key);
-        if (index > -1) {
-          keysCopy.splice(index, 1);
-        }
-      }
-    });
+  keysCopy.forEach((key: string) => {
+    const translation = messages[currentLocale]?.[key];
+    if (translation) {
+      result[key] = translation;
+    }
+  });
 
-    if (keysCopy.length > 0) {
-      const response = await fetchTranslations(currentLocale.substring(0, 2).toLowerCase(), keysCopy);
-  
-      keysCopy.forEach((key: string, index: number) => {
+  const missingKeys = keysCopy.filter((key: string) => !(key in result));
+
+  if (missingKeys.length > 0) {
+    try {
+      const response = await fetchTranslations(
+        currentLocale.substring(0, 2).toLowerCase(),
+        missingKeys
+      );
+      missingKeys.forEach((key: string) => {
         const apiTranslation = response[key];
         if (apiTranslation) {
           result[key] = apiTranslation;
         }
       });
+    } catch (error) {
+      console.error("API Error, continuing with fallback translations:", error);
     }
+  }
 
-    keysCopy.forEach((key: string) => {
-      if (!result[key]) {
-        const fallbackTranslation = messages[LOCALES.ENGLISH]?.[key] || '';
-        result[key] = fallbackTranslation;
-      }
-    });
-
+  keys.forEach((key) => {
+    if (!result[key]) {
+      result[key] = messages[LOCALES.ENGLISH]?.[key] || "";
+    }
+  });
 
   return result;
 };

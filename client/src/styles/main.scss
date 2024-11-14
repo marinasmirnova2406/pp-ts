@@ -6,10 +6,15 @@
 @import 'base/base.scss';
 @import 'base/reset';
 @import 'base/fonts.scss';
-/* 
-// components
-// @import 'components/button';
 
+/* // components */
+@import 'components/common/button.scss';
+@import 'components/common/modal.scss';
+@import 'components/primary/header.scss';
+@import 'components/primary/logotypes.scss';
+
+// @import 'components/button';
+/* 
 // layouts
 // @import 'layouts/header';
 // // @import 'layouts/footer';
@@ -28,67 +33,3 @@
 
 
 
-.modal {
-    position: absolute;
-    @include flex-container(column, space-between, center, nowrap);
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(93, 121, 182);
-    width: 500px;
-    min-height: 200px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  
-    &__head {
-      background-color: rgba(93, 121, 182, 0.26);
-      width: 100%;
-      min-height: 50px;
-      padding: 10px;
-      @include flex-container(row, space-between, center, nowrap);
-  
-      h2 {
-        font-size: 20px;
-      }
-    }
-  
-    &__content {
-      margin: 15px auto;
-      width: 90%;
-    }
-  
-    &__buttons {
-      background-color: rgb(93, 121, 182);
-      width: 100%;
-      @include flex-container(row, space-around, center, nowrap);
-  
-      .button {
-        padding: 7px 20px;
-        margin: auto 10px;
-        background-color: rgb(93, 121, 182);
-        color: white;
-        border: 1px solid white;
-        border-radius: 5px;
-      }
-    }
-  
-    &--base {
-      background-color: rgb(236, 236, 236);
-    }
-  }
-  .button {
-    padding: 7px 20px;
-    margin: auto 10px;
-    display: block;
-    background-color: rgb(93, 121, 182);
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-}
-.button {
-    &__delete {
-        background: none;
-        padding: 5px;
-        border: none;
-        color: rgb(0, 0, 0);
-    }
-}

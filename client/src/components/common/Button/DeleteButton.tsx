@@ -15,7 +15,7 @@ const DeleteButton: React.FC = () => {
     <Button
       additionalClass="button__delete"
       clickFunction={closeModalFunction}
-      text="X"
+      content="X"
     />
   );
 };

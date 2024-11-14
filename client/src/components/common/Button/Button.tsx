@@ -1,14 +1,14 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface ButtonProps {
     additionalClass?: string;
-    text: string;
+    content: ReactNode;
     clickFunction: () => void;
     type?: "button" | "submit" | "reset";
   }
   const Button: React.FC<ButtonProps> = ({
     additionalClass = "",
-    text,
+    content,
     clickFunction,
     type = "button",
   }) => {
@@ -18,7 +18,7 @@ interface ButtonProps {
         onClick={clickFunction}
         type={type}
       >
-        {text}
+        {content}
       </button>
     );
   };
