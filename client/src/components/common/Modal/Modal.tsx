@@ -7,7 +7,7 @@ import { DeleteButton } from "../Button/DeleteButton";
 interface ModalProps {
     styleType: string;
     title: string;
-    content: string;
+    content: ReactNode;
     buttons?: ReactNode;
   }
 

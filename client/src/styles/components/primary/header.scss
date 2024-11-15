@@ -8,36 +8,57 @@
     font-size: 20px;
     color: rgb(39, 39, 39);
   }
-}
 
-.my-trips-nav-links {
-  a {
-    @include flex-container(row, space-between, center, nowrap);
-    padding: 3px 3px 3px 10px;
-    border: 1px solid rgb(39, 39, 39);
-    border-radius: 10px;
-    font-size: 20px;
-    color: rgb(39, 39, 39);
+  .region-settings {
+
+    &__btn {
+      height: 35px;
+      width: 35px;
+      background-color: inherit;
+      border: none;
+
+      img {
+        display: block;
+        height: 35px;
+        width: 35px;
+      }
+    }
+
+    
+    
   }
 
-  &__create-trip-btn {
-    padding: 3px 10px;
-    @include flex-container(row, space-between, center, nowrap);
-    border-radius: 10px;
-    border: none;
-    background-color: rgb(109, 132, 182);
-    margin: 0;
-    margin-left: 10px;
-
-    &__count {
-      @include flex-container(row, center, center, nowrap);
-      padding: 0;
-      background-color: rgb(39, 39, 39);
+  .my-trips-nav-links {
+    a {
+      @include flex-container(row, space-between, center, nowrap);
+      padding: 3px 3px 3px 10px;
+      border: 1px solid rgb(39, 39, 39);
       border-radius: 10px;
-      width: 20px;
-      height: 20px;
-      font-size: 16px;
-      margin-left: 5px;
+      font-size: 20px;
+      color: rgb(39, 39, 39);
+    }
+  
+    &__create-trip-btn {
+      padding: 3px 10px;
+      @include flex-container(row, space-between, center, nowrap);
+      border-radius: 10px;
+      border: none;
+      background-color: rgb(109, 132, 182);
+      margin: 0;
+      margin-left: 10px;
+  
+      &__count {
+        @include flex-container(row, center, center, nowrap);
+        padding: 0;
+        background-color: rgb(39, 39, 39);
+        border-radius: 10px;
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+        margin-left: 5px;
+      }
     }
   }
 }
+
+

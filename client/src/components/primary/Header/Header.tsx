@@ -8,6 +8,7 @@ import { setLocale } from "../../../store/slices/localesSlice";
 // Components
 import { ImageAndTextLogotype } from "../logotypes/ImageAndTextLogotype";
 import { MyTripsNavLinks } from "./MyTripsNavLinks";
+import { RegionSettings } from './RegionSettings';
 // Locale & Translate
 import { LOCALES, Locale } from "../../../i18n/locales";
 import { FormattedMessage } from "react-intl";
@@ -55,6 +56,8 @@ export const Header: React.FC = () => {
       <NavLink to="/travel-guide" end>
         <span className="header__link">{translations["travel_guide"]}</span>
       </NavLink>
+
+      <RegionSettings />
 
 
 

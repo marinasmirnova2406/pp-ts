@@ -1,14 +1,10 @@
 
 .button {
-    padding: 7px 20px;
-    margin: auto 10px;
-    display: block;
     background-color: rgb(93, 121, 182);
     color: white;
     border: 1px solid white;
     border-radius: 5px;
-}
-.button {
+
     &__delete {
         background: none;
         padding: 5px;
