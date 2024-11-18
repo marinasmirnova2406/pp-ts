@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback  } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,7 +7,8 @@ import { RootState } from "../../store/index";
 import { setLocale } from "../../store/slices/localesSlice";
 // Locale & Translate
 import { LOCALES, Locale } from "../../i18n/locales";
-import { FormattedMessage } from "react-intl";
+// Another
+import { useGetCountriesByGroupQuery } from '../../api/countryApi';
 
 
 interface FormValues {
@@ -18,10 +19,18 @@ interface FormValues {
 }
 
 const RegionSettingsForm: React.FC = () => {
+  const region = 'Europe';
+  const { data, error, isLoading } = useGetCountriesByGroupQuery('Europe', {
+    refetchOnFocus: false,
+    refetchOnMountOrArgChange: false,
+  });
+
 
     const dispatch = useDispatch();
     const currentLocale = useSelector((state: RootState) => state.locales.locale);
     const currentLocalization = useSelector((state: RootState) => state.locales.localization);
+
+    const [loading, setLoading] = useState<boolean>(true);
 
     const languages = [
         { name: "English", code: LOCALES.ENGLISH },
@@ -30,7 +39,29 @@ const RegionSettingsForm: React.FC = () => {
         { name: "Русский", code: LOCALES.RUSSIAN },
       ];
 
+      // useEffect(() => {
+      //   const fetchCountries = async () => {
+      //     try {
+      //       // const countryData = await getCountryNames();
+      //       console.log("Data:", countryData);
+            
+      //       // setCountries(countryData);
+      //       // setLoading(false);
+      //     } catch (error) {
+      //       console.error("Ошибка при получении стран:", error);
+      //       setLoading(false);
+      //     }
+      //   };
+    
+      //   fetchCountries();
+      // }, []);
 
+      useEffect(() => {
+        console.log("render");
+        console.log(data);
+        
+        
+      }, []);
 
   const initialValues: FormValues = {
     language: currentLocale,
@@ -46,15 +77,14 @@ const RegionSettingsForm: React.FC = () => {
     timezone: Yup.string(),
   });
 
-  const onSubmit = (values: FormValues) => {
-
+  const onSubmit = useCallback((values: FormValues) => {
     const locale = values.language as Locale;
     dispatch(setLocale(locale));
     localStorage.setItem("locale", locale);
 
 
     console.log("Form data", values);
-  };
+  }, [dispatch]);
 
   return (
     <Formik
@@ -77,10 +107,19 @@ const RegionSettingsForm: React.FC = () => {
           <label htmlFor="country">Country</label>
           <Field as="select" id="country" name="country">
             <optgroup label="Europe">
+
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} label={name} />
+            ))}
+
+
+
               <option value="cz" label="Czech Republic" />
               <option value="fi" label="Finland" />
               <option value="fr" label="France" />
               <option value="de" label="Germany" />
+
+
             </optgroup>
             <optgroup label="North America">
               <option value="us" label="United States" />
@@ -125,4 +164,6 @@ const RegionSettingsForm: React.FC = () => {
   );
 };
 
-export default RegionSettingsForm;
+const RegionSettingsFormMemoized = React.memo(RegionSettingsForm);
+
+export default RegionSettingsFormMemoized;

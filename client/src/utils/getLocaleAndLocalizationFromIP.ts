@@ -10,9 +10,6 @@ export default async function getLocaleAndLocalizationFromIP(): Promise<LocaleDa
   try {
     const response = await axios.get("http://ip-api.com/json");
 
-    console.log(response);
-    
-
     const countryCode: string = response.data.countryCode;
 
     return {

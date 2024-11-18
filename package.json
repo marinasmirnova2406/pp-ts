@@ -18,7 +18,8 @@
   "scripts": {
     "client": "npm start --prefix client",
     "server": "npm run dev --prefix server",
-    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "open-browser": "start firefox http://localhost:3000",
+    "start": "concurrently \"npm run client\" \"npm run server\" \"npm run open-browser\"",
     "build": "npm run build --prefix client",
     "test": "npm test --prefix client"
   },
