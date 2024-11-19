@@ -18,9 +18,12 @@ export const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   const { translations, loading, error } = useTranslations([
-    "travel_inspirations",
-    "travel_guide"
+    "header.travel_inspirations",
+    "header.travel_guide"
   ]);
+
+  console.log(translations);
+  
 
   const currentLocale = useSelector((state: RootState) => state.locales.locale);
 
@@ -50,11 +53,11 @@ export const Header: React.FC = () => {
       <MyTripsNavLinks />
 
       <NavLink to="/travel-inspirations" end>
-        <span className="header__link">{translations["travel_inspirations"]}</span>
+        <span className="header__link">{translations["header.travel_inspirations"]}</span>
       </NavLink>
 
       <NavLink to="/travel-guide" end>
-        <span className="header__link">{translations["travel_guide"]}</span>
+        <span className="header__link">{translations["header.travel_guide"]}</span>
       </NavLink>
 
       <RegionSettings />

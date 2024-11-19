@@ -19,11 +19,31 @@ interface FormValues {
 }
 
 const RegionSettingsForm: React.FC = () => {
-  const region = 'Europe';
-  const { data, error, isLoading } = useGetCountriesByGroupQuery('Europe', {
+
+  const { data: europeCountries } = useGetCountriesByGroupQuery('Europe', {
     refetchOnFocus: false,
     refetchOnMountOrArgChange: false,
   });
+
+  const { data: northAmericaCountries } = useGetCountriesByGroupQuery('North America', {
+    refetchOnFocus: false,
+    refetchOnMountOrArgChange: false,
+  });
+
+  const createListByCountriesData = (countries: { country: string; countryCode: string }[]) => {
+
+    if (countries) {
+      return countries.map((country) => (
+        <option key={country.countryCode} value={country.countryCode} label={country.country} />
+      ));
+    }
+    
+  };
+
+
+  createListByCountriesData(europeCountries);
+
+
 
 
     const dispatch = useDispatch();
@@ -38,30 +58,6 @@ const RegionSettingsForm: React.FC = () => {
         { name: "Українська", code: LOCALES.UKRAINIAN },
         { name: "Русский", code: LOCALES.RUSSIAN },
       ];
-
-      // useEffect(() => {
-      //   const fetchCountries = async () => {
-      //     try {
-      //       // const countryData = await getCountryNames();
-      //       console.log("Data:", countryData);
-            
-      //       // setCountries(countryData);
-      //       // setLoading(false);
-      //     } catch (error) {
-      //       console.error("Ошибка при получении стран:", error);
-      //       setLoading(false);
-      //     }
-      //   };
-    
-      //   fetchCountries();
-      // }, []);
-
-      useEffect(() => {
-        console.log("render");
-        console.log(data);
-        
-        
-      }, []);
 
   const initialValues: FormValues = {
     language: currentLocale,
@@ -106,25 +102,15 @@ const RegionSettingsForm: React.FC = () => {
         <div>
           <label htmlFor="country">Country</label>
           <Field as="select" id="country" name="country">
+
             <optgroup label="Europe">
-
-            {languages.map(({ name, code }) => (
-              <option key={code} value={code} label={name} />
-            ))}
-
-
-
-              <option value="cz" label="Czech Republic" />
-              <option value="fi" label="Finland" />
-              <option value="fr" label="France" />
-              <option value="de" label="Germany" />
-
-
+              {createListByCountriesData(europeCountries)}
             </optgroup>
+
             <optgroup label="North America">
-              <option value="us" label="United States" />
-              <option value="ca" label="Canada" />
+             {createListByCountriesData(northAmericaCountries)}
             </optgroup>
+
             <optgroup label="Asia">
               <option value="jp" label="Japan" />
               <option value="cn" label="China" />

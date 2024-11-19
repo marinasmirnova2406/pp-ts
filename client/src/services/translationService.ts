@@ -1,9 +1,11 @@
 import axios from "axios";
 import store, { RootState } from "../store/index";
 import { LOCALES } from "../i18n/locales";
-import { messages } from "../i18n/messages";
+import { flattenTranslations } from "../utils/flattenTranslations";
 
 const API_URL = "http://localhost:5000/api";
+
+type Translations = Record<string, string>;
 
 export const fetchTranslations = async (lang: string, keys: string[]) => {
   const response = await axios.get(`${API_URL}/translations`, {
@@ -18,14 +20,27 @@ export const fetchTranslations = async (lang: string, keys: string[]) => {
 
 // isAuto - в будущем при true - при отсутствии готового первода делать его автоматически через сторонние сервисі
 export const doTranslations = async (keys: string[], isAuto: boolean) => {
-  const currentLocale = (store.getState() as RootState).locales.locale;
+  const currentLocale = (store.getState() as RootState).locales.locale.substring(0, 2).toLowerCase();
 
   const keysCopy = JSON.parse(JSON.stringify(keys));
 
   const result: Record<string, string> = {};
 
+  const translations: Translations = flattenTranslations(
+    require(`../i18n/locales/${currentLocale}`)
+  );
+
+  console.log(translations);
+  
+
   keysCopy.forEach((key: string) => {
-    const translation = messages[currentLocale]?.[key];
+    const translation = translations[key]; 
+
+    console.log("translations", translations);
+    console.log("key", key);
+    
+    console.log("translation", translation);
+    
     if (translation) {
       result[key] = translation;
     }
@@ -51,8 +66,14 @@ export const doTranslations = async (keys: string[], isAuto: boolean) => {
   }
 
   keys.forEach((key) => {
+
+    const enTranslations: Translations = flattenTranslations(
+      require(`../i18n/locales/${"en"}`)
+    );
+
+
     if (!result[key]) {
-      result[key] = messages[LOCALES.ENGLISH]?.[key] || "";
+      result[key] = enTranslations?.[key] || "";
     }
   });
 

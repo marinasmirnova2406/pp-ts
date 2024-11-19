@@ -3,10 +3,10 @@ import { LOCALES } from "./locales";
 export const messages: Record<string, Record<string, string>> = {
   [LOCALES.ENGLISH]: {
     // Header
-    "my_trips": "My Trips",
-    "create_trip": "Create",
-    "travel_inspirations": "Travel Inspirations",
-    "travel_guide": "Travel Guide",
+    // "my_trips": "My Trips",
+    // "create_trip": "Create",
+    // "travel_inspirations": "Travel Inspirations",
+    // "travel_guide": "Travel Guide",
     // Region Settings Modal
     "region_settings_modal.region_settings": "Region Settings",
     // Country Name
@@ -89,10 +89,10 @@ export const messages: Record<string, Record<string, string>> = {
   },
   [LOCALES.POLISH]: {
     // Header
-    "my_trips": "Moje Podróże",
-    "create_trip": "Stwórz",
-    "travel_inspirations": "Inspiracje Podróżnicze",
-    "travel_guide": "Przewodnik",
+    // "my_trips": "Moje Podróże",
+    // "create_trip": "Stwórz",
+    // "travel_inspirations": "Inspiracje Podróżnicze",
+    // "travel_guide": "Przewodnik",
     // Region Settings Modal
     "region_settings_modal.region_settings": "Ustawienia regionalne",
     // Country Name
@@ -175,10 +175,10 @@ export const messages: Record<string, Record<string, string>> = {
   },
   [LOCALES.UKRAINIAN]: {
     // Header
-    "my_trips": "Мої Подорожі",
-    "create_trip": "Створити",
-    "travel_inspirations": "Ідеї для подорожі",
-    "travel_guide": "Путівник",
+    // "my_trips": "Мої Подорожі",
+    // "create_trip": "Створити",
+    // "travel_inspirations": "Ідеї для подорожі",
+    // "travel_guide": "Путівник",
     // Region Settings Modal
     "region_settings_modal.region_settings": "Регіональні налаштування",
     // Country Name
@@ -260,10 +260,10 @@ export const messages: Record<string, Record<string, string>> = {
   },
   [LOCALES.RUSSIAN]: {
     // Header
-    "my_trips": "Мои путешествия",
-    "create_trip": "Создать",
-    "travel_inspirations": "Идеи для путешествий",
-    "travel_guide": "Путеводитель",
+    // "my_trips": "Мои путешествия",
+    // "create_trip": "Создать",
+    // "travel_inspirations": "Идеи для путешествий",
+    // "travel_guide": "Путеводитель",
     // Region Settings Modal
     "region_settings_modal.region_settings": "Региональные настройки",
     // Country Name

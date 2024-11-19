@@ -3,7 +3,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/index";
 import { doTranslations } from "../services/translationService";
 
-const useTranslations = (keys: string[]) => {
+
+
+const useTranslations = (keys: string[], ) => {
   const currentLocale = useSelector((state: RootState) => state.locales.locale);
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(true);
