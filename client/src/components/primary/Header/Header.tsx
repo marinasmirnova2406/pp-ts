@@ -22,7 +22,6 @@ export const Header: React.FC = () => {
     "header.travel_guide"
   ]);
 
-  console.log(translations);
   
 
   const currentLocale = useSelector((state: RootState) => state.locales.locale);

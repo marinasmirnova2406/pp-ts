@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback  } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import useTranslations from "../../hooks/useTranslations";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 // Store & Slices
@@ -7,6 +8,8 @@ import { RootState } from "../../store/index";
 import { setLocale } from "../../store/slices/localesSlice";
 // Locale & Translate
 import { LOCALES, Locale } from "../../i18n/locales";
+import { doTranslations } from "../../services/translationService";
+import { useGetTranslatedCountryNamesByGroup } from "../../hooks/useGetTranslatedCountryNamesByGroup";
 // Another
 import { useGetCountriesByGroupQuery } from '../../api/countryApi';
 
@@ -25,24 +28,45 @@ const RegionSettingsForm: React.FC = () => {
     refetchOnMountOrArgChange: false,
   });
 
-  const { data: northAmericaCountries } = useGetCountriesByGroupQuery('North America', {
+  // const { data: northAmericaCountries } = useGetCountriesByGroupQuery('North America', {
+  //   refetchOnFocus: false,
+  //   refetchOnMountOrArgChange: false,
+  // });
+
+  const { data: northAmericaCountries } = useGetTranslatedCountryNamesByGroup('North America', {
     refetchOnFocus: false,
     refetchOnMountOrArgChange: false,
   });
 
-  const createListByCountriesData = (countries: { country: string; countryCode: string }[]) => {
 
+  useEffect(() => {
+console.log(northAmericaCountries);
+
+  }, [northAmericaCountries]);
+
+
+
+
+
+
+  const createListByCountriesData = (
+    countries: {
+      country: string;
+      countryCode: string;
+      translationKey: string;
+      countryTranslationName: string;
+    }[]
+  ) => {
     if (countries) {
       return countries.map((country) => (
-        <option key={country.countryCode} value={country.countryCode} label={country.country} />
+        <option
+          key={country.countryCode}
+          value={country.countryTranslationName}
+          label={country.country}
+        />
       ));
     }
-    
   };
-
-
-  createListByCountriesData(europeCountries);
-
 
 
 
@@ -87,6 +111,7 @@ const RegionSettingsForm: React.FC = () => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      key={currentLocale} 
     >
       <Form className="region-settings-form">
         <div>
@@ -110,15 +135,13 @@ const RegionSettingsForm: React.FC = () => {
             <optgroup label="North America">
              {createListByCountriesData(northAmericaCountries)}
             </optgroup>
-
-            <optgroup label="Asia">
-              <option value="jp" label="Japan" />
-              <option value="cn" label="China" />
-              <option value="in" label="India" />
-            </optgroup>
           </Field>
           <ErrorMessage name="country" component="div" />
         </div>
+
+
+
+
 
         <div>
           <label htmlFor="currency">Currency</label>

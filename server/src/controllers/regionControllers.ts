@@ -21,13 +21,15 @@ interface CountryData {
 
 export const getCountryNamesByGroup = async (req: Request, res: Response) => {
   try {
-    const { group } = req.params;
 
+    const { group } = req.params;
+    
     const countries = await Country.find({ group });
 
     const result = countries.map((country) => ({
       country: country.country,
       countryCode: country.countryCode,
+      translationKey: country.translationKey,
     }));
 
     res.json(result);

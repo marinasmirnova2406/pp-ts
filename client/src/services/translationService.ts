@@ -7,6 +7,10 @@ const API_URL = "http://localhost:5000/api";
 
 type Translations = Record<string, string>;
 
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
 export const fetchTranslations = async (lang: string, keys: string[]) => {
   const response = await axios.get(`${API_URL}/translations`, {
     params: {
@@ -18,9 +22,17 @@ export const fetchTranslations = async (lang: string, keys: string[]) => {
   return response.data;
 };
 
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+
+
 // isAuto - в будущем при true - при отсутствии готового первода делать его автоматически через сторонние сервисі
 export const doTranslations = async (keys: string[], isAuto: boolean) => {
-  const currentLocale = (store.getState() as RootState).locales.locale.substring(0, 2).toLowerCase();
+  const currentLocale = (store.getState() as RootState).locales.locale
+    .substring(0, 2)
+    .toLowerCase();
 
   const keysCopy = JSON.parse(JSON.stringify(keys));
 
@@ -30,17 +42,9 @@ export const doTranslations = async (keys: string[], isAuto: boolean) => {
     require(`../i18n/locales/${currentLocale}`)
   );
 
-  console.log(translations);
-  
-
   keysCopy.forEach((key: string) => {
-    const translation = translations[key]; 
+    const translation = translations[key];
 
-    console.log("translations", translations);
-    console.log("key", key);
-    
-    console.log("translation", translation);
-    
     if (translation) {
       result[key] = translation;
     }
@@ -66,11 +70,9 @@ export const doTranslations = async (keys: string[], isAuto: boolean) => {
   }
 
   keys.forEach((key) => {
-
     const enTranslations: Translations = flattenTranslations(
       require(`../i18n/locales/${"en"}`)
     );
-
 
     if (!result[key]) {
       result[key] = enTranslations?.[key] || "";
@@ -79,3 +81,8 @@ export const doTranslations = async (keys: string[], isAuto: boolean) => {
 
   return result;
 };
+
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
