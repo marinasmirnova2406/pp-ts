@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import useTranslations from "../../../hooks/useTranslations";
 // Store & Slices
 import { RootState } from "../../../store/index";
-import { setLocale } from "../../../store/slices/localesSlice";
+import { setLocale } from "../../../store/slices/regionSlice";
 // Components
 import { ImageAndTextLogotype } from "../logotypes/ImageAndTextLogotype";
 import { MyTripsNavLinks } from "./MyTripsNavLinks";
@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
 
   
 
-  const currentLocale = useSelector((state: RootState) => state.locales.locale);
+  const currentLocale = useSelector((state: RootState) => state.region.locale);
 
  
 

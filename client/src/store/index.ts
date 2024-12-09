@@ -3,14 +3,14 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // Slices
-import localesReducer from "./slices/localesSlice";
+import regionReducer from "./slices/regionSlice";
 import modalReducer from "./slices/modalSlice";
 import userTripsReducer from "./slices/userTripsSlice";
 // Api
 import { countryApi } from "../api/countryApi";
 
 const rootReducer = combineReducers({
-  locales: localesReducer,
+  region: regionReducer,
   modal: modalReducer,
   userTrips: userTripsReducer,
   [countryApi.reducerPath]: countryApi.reducer,

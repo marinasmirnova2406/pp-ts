@@ -30,7 +30,7 @@ export const fetchTranslations = async (lang: string, keys: string[]) => {
 
 // isAuto - в будущем при true - при отсутствии готового первода делать его автоматически через сторонние сервисі
 export const doTranslations = async (keys: string[], isAuto: boolean) => {
-  const currentLocale = (store.getState() as RootState).locales.locale
+  const currentLocale = (store.getState() as RootState).region.locale
     .substring(0, 2)
     .toLowerCase();
 

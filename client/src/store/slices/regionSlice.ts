@@ -3,14 +3,15 @@ import { LOCALES, Locale } from "../../i18n/locales";
 import { checkLocalesDataInLocalStorage } from "../../utils/helpersToStorage";
 import { mapCountryCodeToLocale } from "../../utils/getLocaleAndLocalizationFromIP";
 
-interface LocatesState {
+interface RegionState {
   localization: string;
   locale: Locale;
   currency: string;
+  timeZone: string;
 }
 
-const getInitialLocatesState = (): LocatesState => {
-  const { localStorageLocale, localStorageLocalization, localStorageCurrency } =
+const getInitialLocatesState = (): RegionState => {
+  const { localStorageLocale, localStorageLocalization, localStorageCurrency, localStorageTimeZone } =
     checkLocalesDataInLocalStorage();
 
   return {
@@ -19,13 +20,14 @@ const getInitialLocatesState = (): LocatesState => {
       ? mapCountryCodeToLocale(localStorageLocale.substring(0, 2).toUpperCase())
       : LOCALES.ENGLISH,
     currency: localStorageCurrency || "USD",
+    timeZone: localStorageTimeZone || "utc+1"
   };
 };
 
-const initialState: LocatesState = getInitialLocatesState();
+const initialState: RegionState = getInitialLocatesState();
 
-const locatesSlice = createSlice({
-  name: "locates",
+const regionSlice = createSlice({
+  name: "region",
   initialState,
   reducers: {
     setLocale(state, action) {
@@ -37,8 +39,11 @@ const locatesSlice = createSlice({
     setCurrency(state, action) {
       state.currency = action.payload;
     },
+    setTimeZone(state, action) {
+      state.timeZone = action.payload;
+    },
   },
 });
 
-export const { setLocale, setLocalization, setCurrency } = locatesSlice.actions;
-export default locatesSlice.reducer;
+export const { setLocale, setLocalization, setCurrency, setTimeZone } = regionSlice.actions;
+export default regionSlice.reducer;

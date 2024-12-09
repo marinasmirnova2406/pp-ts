@@ -6,7 +6,7 @@ import { doTranslations } from "../services/translationService";
 
 
 const useTranslations = (keys: string[], ) => {
-  const currentLocale = useSelector((state: RootState) => state.locales.locale);
+  const currentLocale = useSelector((state: RootState) => state.region.locale);
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

@@ -10,7 +10,7 @@ export const useGetTranslatedCountryNamesByGroup = (
     options?: { refetchOnFocus?: boolean; refetchOnMountOrArgChange?: boolean }
   ) => {
 
-    const currentLocale = useSelector((state: RootState) => state.locales.locale);
+    const currentLocale = useSelector((state: RootState) => state.region.locale);
 
     const { data: countries, error, isLoading, isFetching } = useGetCountriesByGroupQuery(region, options);
   

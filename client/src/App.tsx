@@ -17,7 +17,7 @@ import { messages } from "./i18n/messages";
 import { onAppStartActions } from "./services/appStartService";
 
 const App: React.FC = () => {
-  const currentLocale = useSelector((state: RootState) => state.locales.locale);
+  const currentLocale = useSelector((state: RootState) => state.region.locale);
 
   useEffect(() => {
     onAppStartActions();

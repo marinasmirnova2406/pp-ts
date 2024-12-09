@@ -9,7 +9,7 @@ interface LocaleData {
 export default async function getLocaleAndLocalizationFromIP(): Promise<LocaleData> {
   try {
     const response = await axios.get("http://ip-api.com/json");
-
+  
     const countryCode: string = response.data.countryCode;
 
     return {
