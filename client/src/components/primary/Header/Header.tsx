@@ -9,6 +9,7 @@ import { setLocale } from "../../../store/slices/regionSlice";
 import { ImageAndTextLogotype } from "../logotypes/ImageAndTextLogotype";
 import { MyTripsNavLinks } from "./MyTripsNavLinks";
 import { RegionSettings } from './RegionSettings';
+import { UserPanel } from './UserPanel';
 // Locale & Translate
 import { LOCALES, Locale } from "../../../i18n/locales";
 import { FormattedMessage } from "react-intl";
@@ -24,7 +25,6 @@ export const Header: React.FC = () => {
 
   
 
-  const currentLocale = useSelector((state: RootState) => state.region.locale);
 
  
 
@@ -37,15 +37,11 @@ export const Header: React.FC = () => {
     { name: "Русский", code: LOCALES.RUSSIAN },
   ];
 
-  const handleChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const locale = event.target.value as Locale;
-    dispatch(setLocale(locale));
-    localStorage.setItem("locale", locale);
-  };
 
   return (
     <header className="header">
       <NavLink to="/" end>
+
         <ImageAndTextLogotype />
       </NavLink>
 
@@ -61,24 +57,8 @@ export const Header: React.FC = () => {
 
       <RegionSettings />
 
+      <UserPanel />
 
-
-
-
-
-
-      <div className="switcher">
-        Languages{" "}
-        <select onChange={handleChange1} value={currentLocale}>
-          {languages.map(({ name, code }) => (
-            <option key={code} value={code}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <FormattedMessage id="btn.login" />
     </header>
   );
 };
