@@ -3,6 +3,6 @@ import { getTranslations } from "../controllers/translationController";
 
 const router = Router();
 
-router.get("/", getTranslations);
+router.get("/translations", getTranslations);
 
 export default router;

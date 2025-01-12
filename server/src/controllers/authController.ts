@@ -1,0 +1,5 @@
+// Регистрация (register)
+// Логин (login)
+// Логаут (logout)
+// Сброс пароля (resetPassword)
+// Проверка токена (verifyToken)

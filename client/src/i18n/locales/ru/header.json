@@ -2,5 +2,8 @@
     "header.my_trips": "Мои путешествия",
     "header.create_trip": "Создать",
     "header.travel_inspirations": "Идеи для путешествий",
-    "header.travel_guide": "Путеводитель"
+    "header.travel_guide": "Путеводитель",
+    "header.logIn": "Войти",
+    "header.signIn": "Зарегистрироваться",
+    "header.logOut": "Выйти с профиля"
   }

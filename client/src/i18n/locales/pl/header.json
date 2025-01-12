@@ -2,5 +2,8 @@
     "header.my_trips": "Moje Podróże",
     "header.create_trip": "Stwórz",
     "header.travel_inspirations": "Inspiracje Podróżnicze",
-    "header.travel_guide": "Przewodnik"
+    "header.travel_guide": "Przewodnik",
+    "header.logIn": "Zaloguj się",
+    "header.signIn": "Zarejestruj się",
+    "header.logOut": "Wyloguj"
   }

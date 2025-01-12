@@ -35,6 +35,7 @@ export const doTranslations = async (keys: string[], isAuto: boolean) => {
     .toLowerCase();
 
   const keysCopy = JSON.parse(JSON.stringify(keys));
+  
 
   const result: Record<string, string> = {};
 

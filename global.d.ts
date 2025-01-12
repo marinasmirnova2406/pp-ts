@@ -1,0 +1,1 @@
+declare function require(context: any): any;

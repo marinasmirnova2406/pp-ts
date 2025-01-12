@@ -20,9 +20,12 @@ export const useGetTranslatedCountryNamesByGroup = (
   
     useEffect(() => {
       const translateCountries = async () => {
+        
         if (!countries || isLoading || isFetching) return;
   
         try {
+
+      
 
           const translationKeys = countries.map((c: any) => c.translationKey);
 

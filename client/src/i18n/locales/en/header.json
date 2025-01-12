@@ -2,5 +2,8 @@
     "header.my_trips": "My Trips",
     "header.create_trip": "Create",
     "header.travel_inspirations": "Travel Inspirations",
-    "header.travel_guide": "Travel Guide"
+    "header.travel_guide": "Travel Guide",
+    "header.logIn": "LogIn",
+    "header.signIn": "SignIn",
+    "header.logOut": "LogOut"
   }

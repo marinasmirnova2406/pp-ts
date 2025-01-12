@@ -1,64 +1,82 @@
-import React from 'react';
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import useTranslations from "../../../hooks/useTranslations";
 // Store & Slices
 import { RootState } from "../../../store/index";
-import { setLocale } from "../../../store/slices/regionSlice";
+import { openModal } from "../../../store/slices/modalSlice";
 // Components
+import { Button } from "../../common/Button/Button";
 import { ImageAndTextLogotype } from "../logotypes/ImageAndTextLogotype";
 import { MyTripsNavLinks } from "./MyTripsNavLinks";
-import { RegionSettings } from './RegionSettings';
-import { UserPanel } from './UserPanel';
-// Locale & Translate
-import { LOCALES, Locale } from "../../../i18n/locales";
-import { FormattedMessage } from "react-intl";
+import { RegionSettings } from "./RegionSettings";
+import { UserPanel } from "./UserPanel";
+import { LogInModal } from "../../common/Modal/LogInModal";
+import { SignInModal } from "../../common/Modal/SignInModal";
 // Another
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
 
+  const openModalType = useSelector(
+    (state: RootState) => state.modal.openModal
+  );
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const { translations, loading, error } = useTranslations([
     "header.travel_inspirations",
-    "header.travel_guide"
+    "header.travel_guide",
+    "header.logIn",
+    "header.signIn",
   ]);
 
-  
-
-
- 
-
-
-
-  const languages = [
-    { name: "English", code: LOCALES.ENGLISH },
-    { name: "Polska", code: LOCALES.POLISH },
-    { name: "Українська", code: LOCALES.UKRAINIAN },
-    { name: "Русский", code: LOCALES.RUSSIAN },
-  ];
-
+  const handleOpenModal = (modalType: "LogIn" | "SignIn") => {
+    dispatch(openModal(modalType));
+  };
 
   return (
     <header className="header">
       <NavLink to="/" end>
-
         <ImageAndTextLogotype />
       </NavLink>
 
       <MyTripsNavLinks />
 
       <NavLink to="/travel-inspirations" end>
-        <span className="header__link">{translations["header.travel_inspirations"]}</span>
+        <span className="header__link">
+          {translations["header.travel_inspirations"]}
+        </span>
       </NavLink>
 
       <NavLink to="/travel-guide" end>
-        <span className="header__link">{translations["header.travel_guide"]}</span>
+        <span className="header__link">
+          {translations["header.travel_guide"]}
+        </span>
       </NavLink>
 
       <RegionSettings />
 
-      <UserPanel />
-
+      {user ? (
+        <UserPanel />
+      ) : (
+        <>
+          {" "}
+          <div className="header__auth_buttons">
+            <Button
+              additionalClass="header__auth_buttons__login"
+              clickFunction={() => handleOpenModal("LogIn")}
+              content={translations["header.logIn"]}
+            />
+            <Button
+              additionalClass="header__auth_buttons__signIn"
+              clickFunction={() => handleOpenModal("SignIn")}
+              content={translations["header.signIn"]}
+            />
+          </div>
+          {openModalType === "LogIn" ? <LogInModal /> : null}
+          {openModalType === "SignIn" ? <SignInModal /> : null}
+        </>
+      )}
     </header>
   );
 };

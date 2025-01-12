@@ -8,14 +8,14 @@ import RegionSettingsForm from "../../forms/RegionSettingsForm";
 // import { FormattedMessage } from 'react-intl'
 
 const RegionSettingsModal = () => {
-  const { translations, loading, error } = useTranslations([
-    "region_settings_modal.region_settings",
+  const { translations } = useTranslations([
+    "region_settings.region_settings",
   ]);
 
   return (
     <Modal
       styleType=""
-      title={translations["region_settings_modal.region_settings"]}
+      title={translations["region_settings.region_settings"]}
       content={<RegionSettingsForm />}
     />
   );

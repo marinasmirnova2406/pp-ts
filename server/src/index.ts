@@ -6,7 +6,6 @@ const path = require("path");
 import { connectDB } from "./config/db";
 
 // Routes
-import testRoutes from './routes/TestRoutes';
 import translationRoutes from "./routes/translationRoutes";
 import regionRoutes from "./routes/regionRoutes";
 
@@ -21,8 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-app.use('/api/test', testRoutes);
-app.use("/api/translations", translationRoutes);
+app.use("/api", translationRoutes);
 app.use("/api", regionRoutes);
 
 

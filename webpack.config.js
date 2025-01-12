@@ -9,6 +9,10 @@ module: {
           'resolve-url-loader',
           'sass-loader'
         ]
+      },
+      {
+        test: /\.json$/,
+        type: 'json',
       }
     ]
   }

@@ -17,6 +17,7 @@ import { useGetTranslatedCountryNamesByGroup } from "../../hooks/useGetTranslate
 import { findDefaultCurrencyByCountryCode } from "../../utils/findDefaultCurrencyByCountryCode";
 import { findTimeZoneByCountryCode } from "../../utils/findTimeZoneByCountryCode";
 
+
 interface FormValues {
   language: string;
   country: string;
@@ -35,6 +36,56 @@ const RegionSettingsForm: React.FC = () => {
   );
   const currentTimeZone = useSelector(
     (state: RootState) => state.region.timeZone
+  );
+
+  const timeZonesCodes: string[] = [
+    "UTC-12",
+    "UTC-11",
+    "UTC-10",
+    "UTC-9",
+    "UTC-8",
+    "UTC-7",
+    "UTC-6",
+    "UTC-5",
+    "UTC-4",
+    "UTC-3",
+    "UTC-2",
+    "UTC-1",
+    "UTC+0",
+    "UTC+1",
+    "UTC+2",
+    "UTC+3",
+    "UTC+3:30",
+    "UTC+4",
+    "UTC+4:30",
+    "UTC+5",
+    "UTC+5:30",
+    "UTC+5:45",
+    "UTC+6",
+    "UTC+6:30",
+    "UTC+7",
+    "UTC+8",
+    "UTC+9",
+    "UTC+9:30",
+    "UTC+10",
+    "UTC+10:30",
+    "UTC+11",
+    "UTC+12",
+    "UTC+12:45",
+    "UTC+13",
+  ];
+
+
+  const timeZonesKeys = timeZonesCodes.map((zone) => `region.time-zones.${zone}`);
+
+  const { translations } = useTranslations([
+    ...timeZonesKeys, 
+    "region_settings.language",
+    "region_settings.country",
+    "region_settings.currency",
+    "region_settings.time_zone",
+    "region_settings.change",
+  ]
   );
 
   const { data: europeCountries } = useGetTranslatedCountryNamesByGroup(
@@ -225,47 +276,6 @@ const RegionSettingsForm: React.FC = () => {
 
   // -------- time zones  -------------------------------------------------------
 
-  const timeZonesCodes: string[] = [
-    "UTC-12",
-    "UTC-11",
-    "UTC-10",
-    "UTC-9",
-    "UTC-8",
-    "UTC-7",
-    "UTC-6",
-    "UTC-5",
-    "UTC-4",
-    "UTC-3",
-    "UTC-2",
-    "UTC-1",
-    "UTC+0",
-    "UTC+1",
-    "UTC+2",
-    "UTC+3",
-    "UTC+3:30",
-    "UTC+4",
-    "UTC+4:30",
-    "UTC+5",
-    "UTC+5:30",
-    "UTC+5:45",
-    "UTC+6",
-    "UTC+6:30",
-    "UTC+7",
-    "UTC+8",
-    "UTC+9",
-    "UTC+9:30",
-    "UTC+10",
-    "UTC+10:30",
-    "UTC+11",
-    "UTC+12",
-    "UTC+12:45",
-    "UTC+13",
-  ];
-
-  const { translations } = useTranslations(
-    timeZonesCodes.map((zone) => `region.time-zones.${zone}`)
-  );
-
   type TimeZoneTranslations = {
     [key: string]: string;
   };
@@ -314,6 +324,7 @@ const RegionSettingsForm: React.FC = () => {
     };
 
     fetchCountryName();
+    
   }, [europeCountries, northAmericaCountries]);
 
 
@@ -379,25 +390,13 @@ const RegionSettingsForm: React.FC = () => {
     localStorage.setItem("time-zone", formValues.timezone);
 
     dispatch(closeModal());
-
-
-
-
-
-
   };
 
-  const onSubmit = useCallback(
-    (values: FormValues) => {
-      console.log("Form data", values);
-    },
-    [dispatch]
-  );
 
   return (
     <form className="region-settings-form" onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="language">Language</label>
+        <label htmlFor="language">{translations["region_settings.language"]}</label>
         <select
           id="language"
           name="language"
@@ -413,7 +412,7 @@ const RegionSettingsForm: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="country">Country</label>
+        <label htmlFor="country">{translations["region_settings.country"]}</label>
         <select
           id="country"
           name="country"
@@ -442,7 +441,7 @@ const RegionSettingsForm: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="currency">Currency</label>
+        <label htmlFor="currency">{translations["region_settings.currency"]}</label>
         <select
           id="currency"
           name="currency"
@@ -454,7 +453,7 @@ const RegionSettingsForm: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="timezone">Time Zone</label>
+        <label htmlFor="timezone">{translations["region_settings.time_zone"]}</label>
         <select
           id="timezone"
           name="timezone"
@@ -465,7 +464,7 @@ const RegionSettingsForm: React.FC = () => {
         </select>
       </div>
 
-      <button type="submit">Submit</button>
+      <button type="submit">{translations["region_settings.change"]}</button>
     </form>
   );
 };
