@@ -11,8 +11,8 @@ import { ImageAndTextLogotype } from "../logotypes/ImageAndTextLogotype";
 import { MyTripsNavLinks } from "./MyTripsNavLinks";
 import { RegionSettings } from "./RegionSettings";
 import { UserPanel } from "./UserPanel";
-import { LogInModal } from "../../common/Modal/LogInModal";
 import { SignInModal } from "../../common/Modal/SignInModal";
+import { RegisterModal } from "../../common/Modal/RegisterModal";
 // Another
 
 export const Header: React.FC = () => {
@@ -30,7 +30,7 @@ export const Header: React.FC = () => {
     "header.signIn",
   ]);
 
-  const handleOpenModal = (modalType: "LogIn" | "SignIn") => {
+  const handleOpenModal = (modalType: "SignIn" | "Register") => {
     dispatch(openModal(modalType));
   };
 
@@ -64,17 +64,17 @@ export const Header: React.FC = () => {
           <div className="header__auth_buttons">
             <Button
               additionalClass="header__auth_buttons__login"
-              clickFunction={() => handleOpenModal("LogIn")}
+              clickFunction={() => handleOpenModal("SignIn")}
               content={translations["header.logIn"]}
             />
             <Button
-              additionalClass="header__auth_buttons__signIn"
-              clickFunction={() => handleOpenModal("SignIn")}
-              content={translations["header.signIn"]}
+              additionalClass="header__auth_buttons__register"
+              clickFunction={() => handleOpenModal("Register")}
+              content={translations["header.register"]}
             />
           </div>
-          {openModalType === "LogIn" ? <LogInModal /> : null}
           {openModalType === "SignIn" ? <SignInModal /> : null}
+          {openModalType === "Register" ? <RegisterModal /> : null}
         </>
       )}
     </header>
