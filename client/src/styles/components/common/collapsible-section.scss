@@ -1,0 +1,19 @@
+.collapsible-section {
+  overflow: hidden;
+  width: 100%;
+
+  &__head {
+    cursor: pointer;
+    @include flex-container(row, space-between, center, nowrap);
+  }
+
+  &__title {
+    color: #333;
+    transition: background-color 0.3s;
+  }
+
+  &__content {
+    padding-top: 5px;
+    border-top: 1px solid #ececec;
+  }
+}

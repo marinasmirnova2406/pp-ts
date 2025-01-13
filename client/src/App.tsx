@@ -9,6 +9,7 @@ import { MyTrips } from "./pages/MyTrips/MyTrips";
 import { TravelInspirations } from "./pages/TravelInspirations/TravelInspirations";
 import { TravelGuide } from "./pages/TravelGuide/TravelGuide";
 import { Notfound } from "./pages/Notfound/Notfound";
+import { Registration } from "./pages/Registration/Registration";
 // Locatess
 import { IntlProvider } from "react-intl";
 import { LOCALES, Locale } from "./i18n/locales";
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path="/travel-inspirations" element={<TravelInspirations />} />
           <Route path="/travel-guide" element={<TravelGuide />} />
           <Route path="*" element={<Notfound />} />
+          <Route path="/registration" element={<Registration />} />
         </Route>
       </Routes>
     </IntlProvider>

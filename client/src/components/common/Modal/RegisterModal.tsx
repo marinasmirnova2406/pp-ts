@@ -3,7 +3,7 @@ import useTranslations from "../../../hooks/useTranslations";
 // Components
 import { Modal } from "./Modal";
 // Forms
-import RegisterForm from "../../forms/RegisterForm";
+import RegistrationForm from "../../forms/RegistrationForm";
 
 const RegisterModal = () => {
   const { translations } = useTranslations([
@@ -14,7 +14,7 @@ const RegisterModal = () => {
     <Modal
       styleType=""
       title={translations["forms_and_modal.auth.register"]}
-      content={<RegisterForm />}
+      content={<RegistrationForm />}
     />
   );
 };

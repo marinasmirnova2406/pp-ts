@@ -1,6 +1,4 @@
 import React, { ReactNode } from "react";
-//Slices
-import { closeModal } from "../../../store/slices/modalSlice";
 // Components
 import { DeleteButton } from "../Button/DeleteButton";
 

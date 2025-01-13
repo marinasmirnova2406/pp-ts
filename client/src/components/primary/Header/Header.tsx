@@ -26,11 +26,11 @@ export const Header: React.FC = () => {
   const { translations, loading, error } = useTranslations([
     "header.travel_inspirations",
     "header.travel_guide",
-    "header.logIn",
+    "header.register",
     "header.signIn",
   ]);
 
-  const handleOpenModal = (modalType: "SignIn" | "Register") => {
+  const handleOpenModal = (modalType: "SignIn") => {
     dispatch(openModal(modalType));
   };
 
@@ -60,21 +60,19 @@ export const Header: React.FC = () => {
         <UserPanel />
       ) : (
         <>
-          {" "}
           <div className="header__auth_buttons">
             <Button
               additionalClass="header__auth_buttons__login"
               clickFunction={() => handleOpenModal("SignIn")}
-              content={translations["header.logIn"]}
+              content={translations["header.signIn"]}
             />
-            <Button
-              additionalClass="header__auth_buttons__register"
-              clickFunction={() => handleOpenModal("Register")}
-              content={translations["header.register"]}
-            />
+            <NavLink to="/registration" end>
+              <span className="header__link">
+                {translations["header.register"]}
+              </span>
+            </NavLink>
           </div>
           {openModalType === "SignIn" ? <SignInModal /> : null}
-          {openModalType === "Register" ? <RegisterModal /> : null}
         </>
       )}
     </header>

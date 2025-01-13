@@ -1,0 +1,111 @@
+.registration-form {
+  @include flex-container(column, flex-start, center, nowrap);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid rgb(243, 243, 243);
+
+  label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 2px;
+  }
+
+  input {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+  }
+
+  select {
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+
+  }
+
+  button {
+    padding: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  &__error {
+    color: rgb(148, 25, 25);
+    font-size: 12px;
+    margin-top: 3px;
+  }
+
+  &__block {
+    margin-bottom: 10px;
+  }
+
+  &__input-group {
+    @include flex-container(column, flex-start, flex-start, nowrap);
+  }
+
+  &__mandatory {
+    width: 100%;
+    @include flex-container(column, flex-start, flex-start, nowrap);
+    background-color: rgb(245, 245, 245);
+
+    &__email-block {
+      @include flex-container(column, flex-start, flex-start, nowrap);
+      background-color: rgb(240, 240, 240);
+
+      &__up-line {
+        @include flex-container(row, flex-start, flex-end, nowrap);
+
+        &__email {
+          @include flex-container(column, flex-start, flex-start, nowrap);
+          margin-right: 10px;
+        }
+
+        &__btn {
+          margin-left: 10px;
+        }
+      }
+
+      &__code-resend {
+        font-size: 12px;
+        color: #555;
+      }
+    }
+
+    &__password-block {
+      @include flex-container(row, flex-start, flex-end, nowrap);
+      gap: 10px;
+    }
+  }
+
+  &__optional {
+    &__name {
+      @include flex-container(row, flex-start, flex-end, nowrap);
+      gap: 10px;
+    }
+
+    &__home {
+        @include flex-container(row, flex-start, flex-start, nowrap);
+        gap: 10px;
+    }
+  }
+}

@@ -4,15 +4,15 @@ import { Header } from "../components/primary/Header/Header";
 
 const Layout: React.FC = () => {
   return (
-    <div>
+    <div className="layout">
       <Header />
 
 
-      <main>
+      <main className="main">
         <Outlet />
       </main>
 
-      <footer>
+      <footer className="footer">
         <p>Footer</p>
       </footer>
     </div>

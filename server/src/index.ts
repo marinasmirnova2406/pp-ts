@@ -8,11 +8,18 @@ import { connectDB } from "./config/db";
 // Routes
 import translationRoutes from "./routes/translationRoutes";
 import regionRoutes from "./routes/regionRoutes";
+import authRoutes from "./routes/authRoutes";
 
 const PORT = process.env.REACT_APP_PORT || 5000;
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -22,6 +29,7 @@ app.use(bodyParser.json());
 
 app.use("/api", translationRoutes);
 app.use("/api", regionRoutes);
+app.use("/auth", authRoutes);
 
 
 
