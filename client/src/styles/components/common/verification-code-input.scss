@@ -1,0 +1,13 @@
+.verification-code-input {
+  @include flex-container(row, flex-start, flex-start, nowrap);
+  gap: "8px";
+
+  &__one-number {
+    width: "40px";
+    height: "40px";
+    text-align: "center";
+    font-size: "18px";
+    border: "1px solid #ccc";
+    border-radius: "5px";
+  }
+}

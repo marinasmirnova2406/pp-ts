@@ -9,6 +9,7 @@ import { connectDB } from "./config/db";
 import translationRoutes from "./routes/translationRoutes";
 import regionRoutes from "./routes/regionRoutes";
 import authRoutes from "./routes/authRoutes";
+import testEmailsRoutes from "./routes/testEmailsRoutes";
 
 const PORT = process.env.REACT_APP_PORT || 5000;
 const app = express();
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 app.use("/api", translationRoutes);
 app.use("/api", regionRoutes);
 app.use("/auth", authRoutes);
+app.use("/test-email", testEmailsRoutes);
 
 
 

@@ -10,16 +10,17 @@
     "@types/node": "^16.18.115",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "nodemailer": "^6.9.16",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "client": "npm start --prefix client",
     "server": "npm run dev --prefix server",
     "open-browser": "start firefox http://localhost:3000",
-    "start": "concurrently \"npm run client\" \"npm run server\" \"npm run open-browser\"",
+    "start": "concurrently \"npm run client\" \"npm run server\" \"start firefox http://localhost:3000\"",
     "build": "npm run build --prefix client",
     "test": "npm test --prefix client"
   },
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "postcss-loader": "^8.1.1",
     "sass": "^1.80.6",

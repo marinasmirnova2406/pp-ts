@@ -1,289 +1,220 @@
 import React, { useEffect, useState, useCallback } from "react";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import useTranslations from "../../hooks/useTranslations";
-// Store & Slices
-import { closeModal } from "../../store/slices/modalSlice";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 // Components
+import { InputGroup } from "../common/InputGroup/InputGroup";
 import { Button } from "../common/Button/Button";
-import { CollapsibleSection } from "../common/CollapsibleSection/CollapsibleSection";
-
-interface FormValues {
-  email: string;
-  password: string;
-}
+import { VerificationCodeInput } from "../common/VerificationCodeInput/VerificationCodeInput";
 
 const RegistrationForm: React.FC = () => {
-  const dispatch = useDispatch();
 
-  const { translations } = useTranslations([
-    "forms_and_modal.auth.email",
-    "forms_and_modal.auth.password",
-    "forms_and_modal.auth.username",
-    "forms_and_modal.auth.gender",
-    "forms_and_modal.auth.date_of_birth",
-    "forms_and_modal.auth.first_name",
-    "forms_and_modal.auth.last_name",
-    "forms_and_modal.auth.repeat_password",
-    "forms_and_modal.auth.gender.male",
-    "forms_and_modal.auth.gender.female",
-    "forms_and_modal.auth.gender.another",
-    "forms_and_modal.auth.gender.not_specified",
-    "forms_and_modal.auth.policy_acceptance",
-    "forms_and_modal.auth.email_acceptance",
-    "forms_and_modal.auth.create_profile",
-    "forms_and_modal.auth.send_code",
-    "forms_and_modal.auth.home-country",
-    "forms_and_modal.auth.home-city",
-    "forms_and_modal.auth.like-travel-with",
-  ]);
+    const [verificationCode, setVerificationCode] = useState<string | null>(null);
+    const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState({
+    
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [timer, setTimer] = useState<number | null>(null);
+
+  const initialValues = {
     email: "",
     username: "",
     password: "",
     confirmPassword: "",
-    firstName: "",
-    lastName: "",
-    gender: "",
     dateOfBirth: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    policyAgree: false,
+    emailAgree: false,
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(e);
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Please enter a correct e-mail address")
+      .max(254, "The e-mail is too long (max 254 characters)")
+      .required("E-mail is required"),
+    username: Yup.string()
+    .matches(/^[a-zA-Z]/, "Username must start with a letter.")
+      .min(3, "Username must be at least 3 characters")
+      .max(35, "The username is too long (max 35 characters)")
+      .required("Username is required "),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .max(50, "The password is too long")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords must match")
+      .required("Confirm Password is required"),
+      dateOfBirth: Yup.date()
+      .required("Date of Birth is required")
+      .test(
+        "is-valid-age",
+        "Please state your true age",
+        (value) => {
+          if (!value) return false;
+          const today = new Date();
+          const birthDate = new Date(value);
+          const age = today.getFullYear() - birthDate.getFullYear();
+    
+          const hasHadBirthdayThisYear =
+            today.getMonth() > birthDate.getMonth() ||
+            (today.getMonth() === birthDate.getMonth() &&
+              today.getDate() >= birthDate.getDate());
+    
+          const accurateAge = hasHadBirthdayThisYear ? age : age - 1;
+    
+          return accurateAge >= 8 && accurateAge <= 120;
+        }
+      ),
+    policyAgree: Yup.boolean().oneOf(
+      [true],
+      "You must agree to the terms and conditions"
+    ),
+    emailAgree: Yup.boolean(),
+  });
 
-    try {
-      const response = await axios.post("http://localhost:5000/auth/register", {
-        email: formData.email,
-        username: formData.username,
-        password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        gender: formData.gender,
-        dateOfBirth: formData.dateOfBirth,
-      });
 
-      // Очистка формы
-      setFormData({
-        email: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
-        firstName: "",
-        lastName: "",
-        gender: "male",
-        dateOfBirth: "",
-      });
-    } catch (error: any) {}
 
-    dispatch(closeModal());
+
+  const handleSendVerificationCode = async (
+    email: string,
+    errors: any
+  ): Promise<void> => {
+    
+    if (errors || !email) {
+      return;
+    }
+
+    const generateVerificationCode = async (): Promise<string> => {
+      return Math.random().toString().slice(2, 8);
+    };
+
+    const sendVerificationCode = async (email: string, verificationCode: string): Promise<boolean> => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/test-email/send-verification-code",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, code: verificationCode }),
+          }
+        );
+        
+
+        if (!response.ok) {
+          console.log("Failed to send verification code");
+          return false;
+        }
+
+        return true;
+      } catch (error) {
+        console.log("Error:", error);
+        return false;
+      }
+    };
+
+    setIsButtonDisabled(true);
+    setErrorMessage("");
+
+    const generatedVerificationCode = await generateVerificationCode();
+    const isEmailSended = await sendVerificationCode(email, generatedVerificationCode);
+
+    if (!isEmailSended) {
+      setIsButtonDisabled(false);
+      setErrorMessage("Something went wrong. Please try again.");
+      return;
+    }
+    
+    setVerificationCode(generatedVerificationCode);
+
+    let remainingTime = 30;
+    setTimer(remainingTime);
+
+    const countdown = setInterval(() => {
+      remainingTime -= 1;
+      setTimer(remainingTime);
+      if (remainingTime <= 0) {
+        clearInterval(countdown);
+        setIsButtonDisabled(false);
+      }
+    }, 1000);
+  };
+
+
+
+
+
+
+  const handleSubmit = (values: typeof initialValues) => {
+    console.log("Submitted values:", values);
+    // Здесь можно отправить данные на сервер
   };
 
   return (
-    <form className="registration-form" onSubmit={handleSubmit}>
-      <div className="registration-form__mandatory">
-        {/* Email */}
-        <div className="registration-form__mandatory__email-block registration-form__block">
-          <div className="registration-form__mandatory__email-block__up-line">
-            <div className="registration-form__input-group">
-              <label htmlFor="email">
-                {translations["forms_and_modal.auth.email"]}
-              </label>
-              <input type="email" id="email" name="email" required />
-            </div>
-
-            <Button
-              additionalClass="registration-form__mandatory__email-block__up-line__btn"
-              content={translations["forms_and_modal.auth.send_code"]}
-              clickFunction={() => console.log("Send code func")}
-              type="button"
-            />
-          </div>
-          <div className="registration-form__error">Email Error</div>
-
-          <div className="registration-form__mandatory__email-block__code">
-            _ _ _ _ _ _
-          </div>
-
-          <div className="registration-form__mandatory__email-block__code-resend">
-            You will be able to resend the code in 30 seconds
-          </div>
-        </div>
-
-        {/* Username */}
-        <div className="registration-form__block">
-          <div className="registration-form__input-group">
-            <label htmlFor="username">
-              {translations["forms_and_modal.auth.username"]}
-            </label>
-            <input type="text" id="username" name="username" required />
-          </div>
-          <div className="registration-form__error">Username Error</div>
-        </div>
-
-        {/* Birth Date */}
-        <div className="registration-form__block">
-          <div className="registration-form__input-group">
-            <label htmlFor="birthDate">
-              {translations["forms_and_modal.auth.date_of_birth"]}
-            </label>
-            <input type="date" id="birthDate" name="birthDate" required />
-          </div>
-          <div className="registration-form__error">Birth Date Error</div>
-        </div>
-
-        {/* Password */}
-        <div className="registration-form__block">
-          <div className="registration-form__mandatory__password-block">
-            <div className="registration-form__input-group">
-              <label htmlFor="password">
-                {translations["forms_and_modal.auth.password"]}
-              </label>
-              <input type="password" id="password" name="password" required />
-            </div>
-
-            <div className="registration-form__input-group">
-              <label htmlFor="repeat-password">
-                {translations["forms_and_modal.auth.repeat_password"]}
-              </label>
-              <input
-                type="password"
-                id="repeat-password"
-                name="repeat-password"
-                required
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting, values, errors }) => (
+        <Form className="registration-form">
+          <div className="registration-form__email-block">
+            <div className="registration-form__email-block__up-line">
+              {/* Email */}
+              <InputGroup
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="example@mail.com"
+              />
+              <Button
+                additionalClass={`registration-form__email-block__up-line__btn ${errors.email || !values.email || isButtonDisabled  ? "registration-form__email-block__up-line__btn--disabled" : ""}`}
+                content={isButtonDisabled ? `Resend in ${timer}s` : "Send Code"}
+                clickFunction={() => handleSendVerificationCode(values.email, errors.email)}
+                type="button"
+                disabled={isButtonDisabled || Boolean(errors.email) || !Boolean(values.email) }
               />
             </div>
+            <VerificationCodeInput
+              additionalClass="registration-form__email-block__code"
+              length={6}
+              onComplete={(code: string) => console.log("Code:", code)}
+            />
           </div>
-          <div className="registration-form__error">Password Error</div>
-        </div>
-      </div>
 
-      <CollapsibleSection
-        additionalClass="registration-form__optional"
-        title="Enter more data to make the application easier to use"
-      >
-        {/* Name */}
-        <div className="registration-form__optional__name">
-          <div className="registration-form__block">
-            <div className="registration-form__input-group">
-              <label htmlFor="firstName">
-                {translations["forms_and_modal.auth.first_name"]}
-              </label>
-              <input type="text" id="first-name" name="first-name" />
-            </div>
-            <div className="registration-form__error">First name Error</div>
+          {/* Username */}
+          <InputGroup
+            label="Username"
+            name="username"
+            type="text"
+            placeholder="user_name.38"
+          />
+
+          {/* Date of Birth */}
+          <InputGroup label="Date of Birth" name="dateOfBirth" type="date" />
+
+          <div className="registration-form__password-block">
+            {/* Password */}
+            <InputGroup label="Password" name="password" type="password" />
+            <InputGroup
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+            />
           </div>
-          <div className="registration-form__block">
-            <div className="registration-form__input-group">
-              <label htmlFor="lastName">
-                {translations["forms_and_modal.auth.last_name"]}
-              </label>
-              <input type="text" id="last-name" name="last-name" />
-            </div>
-            <div className="registration-form__error">Last name Error</div>
-          </div>
-        </div>
 
-        {/* Gender */}
-        <div className="registration-form__block">
-          <div className="registration-form__input-group">
-            <label htmlFor="gender">
-              {translations["forms_and_modal.auth.gender"]}
-            </label>
-            <select
-              id="gender"
-              name="gender"
-              onChange={(e) => {}}
-              className="registration-form__gender"
-            >
-              <option value="not_specified">Prefer not to say</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-        </div>
+          {/* Policy Agree */}
+          <InputGroup type="checkbox" name="policyAgree" label="Agree to terms and conditions" />
 
-        {/* Home */}
-        <div className="registration-form__optional__home">
-          <div className="registration-form__block">
-            <div className="registration-form__input-group">
-              <label htmlFor="home-country">
-                {translations["forms_and_modal.auth.home-country"]}
-              </label>
-              <input type="text" id="home-country" name="home-country" />
-            </div>
-          </div>
-          <div className="registration-form__block">
-            <div className="registration-form__input-group">
-              <label htmlFor="home-city">
-                {translations["forms_and_modal.auth.home-city"]}
-              </label>
-              <input type="text" id="home-city" name="home-city" />
-            </div>
-            <div className="registration-form__error">City Error</div>
-          </div>
-        </div>
+          {/* Email Agree */}
+          <InputGroup type="checkbox" name="emailAgree" label="Receive email updates" />
 
-        {/* Travel Group */}
-        <div className="registration-form__block">
-          <div className="registration-form__input-group">
-            <label htmlFor="travel-group">
-              {translations["forms_and_modal.auth.like-travel-with"]}
-            </label>
-            <select
-              id="travel-group"
-              name="travel-group"
-              onChange={(e) => {}}
-              className="registration-form__travel-group"
-            >
-              <option value="on-my-own">On my own</option>
-              <option value="couple">As a couple</option>
-              <option value="family">As a family</option>
-              <option value="large-group">A large group of people</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Добавить любимый тип транспорта */}
-        {/* Добавить любимый тип отдыха - море, города и архитектура, паталки и т.д. */}
-      </CollapsibleSection>
-
-      {/* Emails Agree */}
-      <div className="registration-form__block">
-        <div className="registration-form__input-group">
-          <label>
-            <input type="checkbox" name="emails-agree" />
-            {translations["forms_and_modal.auth.email_acceptance"]}
-          </label>
-        </div>
-      </div>
-
-      {/* Policy Agree */}
-      <div className="registration-form__block">
-        <div className="registration-form__input-group">
-          <label>
-            <input type="checkbox" name="policy-agree" required />
-            {translations["forms_and_modal.auth.policy_acceptance"]}
-          </label>
-        </div>
-      </div>
-
-      <Button
-        additionalClass="registration-form__submit"
-        content={translations["forms_and_modal.auth.create_profile"]}
-        clickFunction={() => console.log("create")}
-        type="submit"
-      />
-    </form>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Register"}
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
