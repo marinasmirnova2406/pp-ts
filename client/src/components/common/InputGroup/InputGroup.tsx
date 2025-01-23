@@ -8,10 +8,14 @@ interface InputGroupProps {
   name: string;
   id?: string;
   placeholder?: string;
+  customError?: string;
+  isDisabled?: boolean;
 }
 
 const InputGroup: React.FC<InputGroupProps> = ({
   additionalClass = "",
+  customError = "",
+  isDisabled = false,
   label,
   type,
   ...props
@@ -28,6 +32,8 @@ const InputGroup: React.FC<InputGroupProps> = ({
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     let allowedRegex = null;
+
+  
 
     switch (props.name) {
       case "email":
@@ -98,11 +104,14 @@ const InputGroup: React.FC<InputGroupProps> = ({
             className={inputClass}
             {...field}
             {...props}
-            onChange={handleInput} // Добавляем обработчик для других инпутов
+            onChange={handleInput}
+            disabled={isDisabled}
           />
-          {meta.touched && meta.error && (
-            <div className="input-group__error">{meta.error}</div>
-          )}
+          {(meta.touched && meta.error) || customError ? (
+            <div className="input-group__error">
+              {meta.touched && meta.error ? meta.error : customError}
+            </div>
+          ) : null}
         </>
       )}
     </div>

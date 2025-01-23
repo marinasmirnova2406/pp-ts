@@ -81,4 +81,12 @@
       cursor: pointer;
       display: inline-block;
     }
+
+    &--email-verified {
+      .input-group__input {
+        border: 2px solid green;
+        padding: 3px;
+      }
+      
+    }
   }

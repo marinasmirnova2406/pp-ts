@@ -13,7 +13,7 @@ const RegistrationForm: React.FC = () => {
 
     
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [emailErrorMessage, setEmailErrorMessage] = useState("");
     const [timer, setTimer] = useState<number | null>(null);
 
   const initialValues = {
@@ -71,9 +71,6 @@ const RegistrationForm: React.FC = () => {
     emailAgree: Yup.boolean(),
   });
 
-
-
-
   const handleSendVerificationCode = async (
     email: string,
     errors: any
@@ -114,17 +111,19 @@ const RegistrationForm: React.FC = () => {
     };
 
     setIsButtonDisabled(true);
-    setErrorMessage("");
+    
+    setTimer(30);
 
     const generatedVerificationCode = await generateVerificationCode();
     const isEmailSended = await sendVerificationCode(email, generatedVerificationCode);
 
     if (!isEmailSended) {
       setIsButtonDisabled(false);
-      setErrorMessage("Something went wrong. Please try again.");
+      setTimer(null);
+      setEmailErrorMessage("Something went wrong. Please try again.");
       return;
     }
-    
+
     setVerificationCode(generatedVerificationCode);
 
     let remainingTime = 30;
@@ -140,6 +139,19 @@ const RegistrationForm: React.FC = () => {
     }, 1000);
   };
 
+  const onVerificationCodeInputComplete = (code: string): void => {
+    if (verificationCode === code) {
+      setIsEmailVerified(true);
+      setEmailErrorMessage("");
+      setTimer(null);
+      console.log("Verification successful!");
+    } else {
+      setIsEmailVerified(false);
+      setEmailErrorMessage("Invalid verification code. Please try again.");
+      console.log("Verification failed. Code does not match.");
+    }
+  }
+
 
 
 
@@ -147,7 +159,6 @@ const RegistrationForm: React.FC = () => {
 
   const handleSubmit = (values: typeof initialValues) => {
     console.log("Submitted values:", values);
-    // Здесь можно отправить данные на сервер
   };
 
   return (
@@ -166,19 +177,45 @@ const RegistrationForm: React.FC = () => {
                 name="email"
                 type="email"
                 placeholder="example@mail.com"
+                customError={emailErrorMessage}
+                isDisabled={isEmailVerified}
+                additionalClass={
+                  isEmailVerified ? "input-group--email-verified" : ""
+                }
               />
               <Button
-                additionalClass={`registration-form__email-block__up-line__btn ${errors.email || !values.email || isButtonDisabled  ? "registration-form__email-block__up-line__btn--disabled" : ""}`}
-                content={isButtonDisabled ? `Resend in ${timer}s` : "Send Code"}
-                clickFunction={() => handleSendVerificationCode(values.email, errors.email)}
+                additionalClass={`registration-form__email-block__up-line__btn ${
+                  errors.email || !values.email || isButtonDisabled
+                    ? "registration-form__email-block__up-line__btn--disabled"
+                    : ""
+                } ${isEmailVerified ? "registration-form__email-block__up-line__btn--email-verified" : ""}
+                `}
+                content={
+                  isEmailVerified
+                    ? "Email Verified"
+                    : isButtonDisabled
+                    ? `Resend in ${timer}s`
+                    : "Send Code"
+                }
+                clickFunction={() =>
+                  handleSendVerificationCode(values.email, errors.email)
+                }
                 type="button"
-                disabled={isButtonDisabled || Boolean(errors.email) || !Boolean(values.email) }
+                disabled={
+                  isButtonDisabled ||
+                  Boolean(errors.email) ||
+                  !Boolean(values.email) ||
+                  isEmailVerified
+                }
               />
             </div>
             <VerificationCodeInput
-              additionalClass="registration-form__email-block__code"
+              additionalClass={`registration-form__email-block__code ${isEmailVerified ? "registration-form__email-block__code--email-verified" : ""}`}
               length={6}
-              onComplete={(code: string) => console.log("Code:", code)}
+              onComplete={(code: string) =>
+                onVerificationCodeInputComplete(code)
+              }
+              isDisabled={isEmailVerified}
             />
           </div>
 
@@ -204,10 +241,18 @@ const RegistrationForm: React.FC = () => {
           </div>
 
           {/* Policy Agree */}
-          <InputGroup type="checkbox" name="policyAgree" label="Agree to terms and conditions" />
+          <InputGroup
+            type="checkbox"
+            name="policyAgree"
+            label="Agree to terms and conditions"
+          />
 
           {/* Email Agree */}
-          <InputGroup type="checkbox" name="emailAgree" label="Receive email updates" />
+          <InputGroup
+            type="checkbox"
+            name="emailAgree"
+            label="Receive email updates"
+          />
 
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Register"}

@@ -42,11 +42,21 @@
         }
 
         &--disabled {
+          cursor: default;
           background-color: gray;
+
+          &:hover {
+            background-color: gray;
+          }
         }
 
-        &:hover {
-          background-color: gray
+        &--email-verified {
+          background-color: green;
+          cursor: default;
+
+          &:hover {
+            background-color: green;
+          }
         }
       }
     }
@@ -61,7 +71,15 @@
         border-bottom: 1px solid rgb(0, 4, 255);
         background-color: #f1f1f1;
         border-radius: 0px;
+        text-align: center;
       }
+
+    &--email-verified {
+      input {
+        border-bottom: 1px solid green;
+        color: rgb(141, 160, 142)
+      }
+    }
     }
   }
 
@@ -69,6 +87,4 @@
     @include flex-container(row, flex-start, flex-end, nowrap);
     gap: 10px;
   }
-
-
 }
